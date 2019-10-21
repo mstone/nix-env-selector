@@ -1,5 +1,7 @@
-out
+output
 node_modules
 .vscode-test/
 *.vsix
 secrets
+bower_components
+.psc-ide-port

@@ -29,7 +29,7 @@
 	"activationEvents": [
 		"*"
 	],
-	"main": "./out/extension.js",
+	"main": "output/Main/index.js",
 	"contributes": {
 		"configuration": {
 			"title": "Nix Environment Selector",
@@ -38,6 +38,11 @@
 					"type": "string",
 					"default": null,
 					"description": "Path for nix-shell config"
+				},
+				"nixEnvSelector.disabled": {
+					"type": "boolean",
+					"default": false,
+					"description": "If true will disable Nix Environment for current workspace"
 				}
 			}
 		},
@@ -50,27 +55,17 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
+		"compile": "pulp build",
+		"watch": "pulp --watch build",
 		"pretest": "yarn run compile",
 		"test:integration": "node ./out/test/runTest.js",
-		"test:unit": "echo 'no command specified'"
+		"test:unit": "echo 'no command specified'",
+		"start:language-server": "purescript-language-server --stdio"
 	},
 	"devDependencies": {
-		"@types/dotenv": "^6.1.1",
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.6",
-		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.38.0",
-		"glob": "^7.1.4",
-		"mocha": "^6.1.4",
-		"tslint": "^5.12.1",
-		"typescript": "^3.3.1",
-		"vscode-test": "^1.2.0"
-	},
-	"dependencies": {
-		"dotenv": "^8.1.0",
-		"fluture": "^11.0.3",
-		"fp-ts": "^2.0.5"
+		"@types/vscode": "^1.39.0",
+		"purescript": "^0.13.3",
+		"purescript-language-server": "^0.12.7",
+		"purty": "^4.5.1"
 	}
 }

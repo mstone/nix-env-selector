@@ -5,6 +5,8 @@ let
   nixPackages = [
     pkgs.nodejs-10_x
     pkgs.yarn
+    pkgs.nodePackages.bower
+    pkgs.nodePackages.pulp
   ];
 in
 pkgs.stdenv.mkDerivation {
@@ -13,5 +15,6 @@ pkgs.stdenv.mkDerivation {
   postInstall =
     ''
       yarn install
+      bower install
     '';
 }
