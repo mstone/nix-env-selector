@@ -1,12 +1,6 @@
-const vscode = require("vscode");
+const vscode = require('vscode')
 
-exports.showQuickPickJs = function(options) {
-  return function(items) {
-    var r = vscode.window.showQuickPick(items, options);
-    
-    return r.then(function(value) {
-      console.log('result', value);
-      return value === undefined ? null : value;
-    })
-  };
-};
+exports.showQuickPickJs = options => items =>
+  vscode.window
+    .showQuickPick(items, options)
+    .then(value => (value === undefined ? null : value))

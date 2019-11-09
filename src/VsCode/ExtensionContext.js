@@ -1,6 +1,2 @@
-exports.subscriptions =
-  function(extensionContext) {
-    return function() {
-      return extensionContext.subscriptions
-    }
-  }
+exports.subscriptions = extensionContext => _ =>
+  extensionContext.subscriptions
