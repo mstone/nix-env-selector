@@ -18,6 +18,8 @@ import VsCode.Window.QuickPick (QuickPickItems(..), showSimpleQuickPick)
 import VsCode.Window.StatusBar (Aligment(..)) as Aligment
 import VsCode.Window.StatusBar (Priority(..), createStatus, showStatus)
 import VsCode.Workspace (workspaceFolders, getConfiguration)
+import Node.ChildProcess as CP
+import Sunde as S
 
 type ConfigPickItem
   = { label :: String
@@ -81,6 +83,8 @@ activateEff ctx =
           registerCommand "extension.selectEnv" do
             fiber <-
               launchAff do
+                -- result <- S.spawn "ls" [] CP.defaultSpawnOptions
+                -- liftEffect $ logShow result
                 configList <- getNixConfigs workspaceRoot
                 liftEffect $ logShow configList
                 selectedItem <-
