@@ -6,3 +6,4 @@ secrets
 .psc-ide-port
 yarn-error.log
 .spago
+yarn.lock
