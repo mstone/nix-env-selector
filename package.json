@@ -29,7 +29,7 @@
 	"activationEvents": [
 		"*"
 	],
-	"main": "output/Main/index.js",
+	"main": "dist/index.js",
 	"contributes": {
 		"configuration": {
 			"title": "Nix Environment Selector",
@@ -54,18 +54,14 @@
 		]
 	},
 	"scripts": {
-		"vscode:prepublish": "yarn run compile",
-		"compile": "pulp build",
-		"watch": "pulp --watch build",
-		"pretest": "yarn run compile",
-		"test:integration": "node ./out/test/runTest.js",
-		"test:unit": "echo 'no command specified'",
-		"start:language-server": "purescript-language-server --stdio"
+		"vscode:prepublish": "spago bundle-module -t ./dist/Main/index.js && rm -rf output && mv dist output",
+		"compile": "spago build",
+		"watch": "spago build -w",
+		"test": "spago test"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.39.0",
-		"purescript": "^0.13.3",
+		"purescript": "^0.13.4",
 		"purescript-language-server": "^0.12.7",
-		"purty": "^4.5.1"
+		"spago": "^0.10.0"
 	}
 }
