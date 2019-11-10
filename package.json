@@ -29,7 +29,7 @@
 	"activationEvents": [
 		"*"
 	],
-	"main": "dist/index.js",
+	"main": "output/Main/index.js",
 	"contributes": {
 		"configuration": {
 			"title": "Nix Environment Selector",
@@ -58,10 +58,5 @@
 		"compile": "spago build",
 		"watch": "spago build -w",
 		"test": "spago test"
-	},
-	"devDependencies": {
-		"purescript": "0.13.4",
-		"purescript-language-server": "0.12.7",
-		"spago": "0.10.0"
 	}
 }
