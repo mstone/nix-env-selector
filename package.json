@@ -54,9 +54,16 @@
 		]
 	},
 	"scripts": {
-		"vscode:prepublish": "spago bundle-module -t ./dist/Main/index.js && rm -rf output && mv dist output",
+		"vscode:prepublish": "yarn bundle:build && yarn bundle:clear-dev && yarn bundle:compress && yarn bundle:clear-tmp",
 		"compile": "spago build",
 		"watch": "spago build -w",
-		"test": "spago test"
+		"test": "spago test",
+		"bundle:build": "spago bundle-module -t ./dist/Main/index.js",
+		"bundle:clear-dev": "rm -rf output && mkdir -p output/Main",
+		"bundle:compress": "terser ./dist/Main/index.js -o ./output/Main/index.js",
+		"bundle:clear-tmp": "rm -rf dist"
+	},
+	"devDependencies": {
+		"terser": "^5.5.1"
 	}
 }

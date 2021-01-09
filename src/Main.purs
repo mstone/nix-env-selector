@@ -1,16 +1,22 @@
 module Main where
 
 import Prelude
+
 import Actions (getNixConfigs)
 import Data.Array (head)
+import Data.Either (Either(..))
 import Data.Maybe (Maybe(..), fromMaybe, isNothing)
-import Data.String.Read (readDefault)
 import Data.String (Pattern(..), Replacement(..), replace)
+import Data.String.Read (readDefault)
+import Dotenv (loadContents)
+import Node.Process (lookupEnv)
 import Effect (Effect)
-import Effect.Aff (launchAff)
+import Effect.Aff (Aff, launchAff_)
 import Effect.Class (liftEffect)
 import Effect.Console (logShow)
 import Effect.Unsafe (unsafePerformEffect)
+import Node.ChildProcess as CP
+import Sunde as S
 import VsCode.Commands (registerCommand)
 import VsCode.ExtensionContext (ExtensionContext, subscriptions)
 import VsCode.ExtensionContext.Subscriptions (push)
@@ -18,8 +24,6 @@ import VsCode.Window.QuickPick (QuickPickItems(..), showSimpleQuickPick)
 import VsCode.Window.StatusBar (Aligment(..)) as Aligment
 import VsCode.Window.StatusBar (Priority(..), createStatus, showStatus)
 import VsCode.Workspace (workspaceFolders, getConfiguration)
-import Node.ChildProcess as CP
-import Sunde as S
 
 type ConfigPickItem
   = { label :: String
@@ -56,6 +60,18 @@ replacePathToWorkspace workspaceRoot =
     (Pattern workspaceRoot)
     (Replacement "${workspaceRoot}")
 
+getNixEnvironmentVars :: String -> String -> Aff (Either String String)
+getNixEnvironmentVars workspaceRoot configPath =
+  (\result ->
+    case result.exit of
+      CP.Normally 0 -> Right result.stdout
+      CP.Normally _ -> Left result.stdout
+      _ -> Left result.stderr) <$>
+  S.spawn
+      { cmd: "nix-shell"
+      , args: [configPath, "--run", "export | sed 's/declare -x //g' | sed 's/^[[:alpha:]]*$//g'"]
+      , stdin: Nothing } (CP.defaultSpawnOptions {cwd = Just workspaceRoot})
+
 activateEff ::
   ExtensionContext ->
   Effect Unit
@@ -82,16 +98,22 @@ activateEff ctx =
         disposable <-
           registerCommand "extension.selectEnv" do
             fiber <-
-              launchAff do
-                -- result <- S.spawn "ls" [] CP.defaultSpawnOptions
-                -- liftEffect $ logShow result
+              launchAff_ do
                 configList <- getNixConfigs workspaceRoot
-                liftEffect $ logShow configList
+                
                 selectedItem <-
                   showSimpleQuickPick
                     $ QuickPickItems
                     $ (makeConfigPickItem workspaceRoot <$> configList)
-                liftEffect $ logShow selectedItem
+
+                environmentOutput <- case selectedItem of
+                  Just {value: nixFileName} -> getNixEnvironmentVars workspaceRoot nixFileName
+                  Nothing -> pure $ Left "File not selected"
+                liftEffect $ logShow environmentOutput
+                parsed <- case environmentOutput of
+                  Right content -> loadContents "VAR1=value\n\nVAR2=value"
+                  Left _ -> pure []
+                liftEffect $ logShow parsed
             pure unit
         ss <- subscriptions ctx
         push ss disposable
