@@ -19,9 +19,15 @@
             yarnBuildMore = ''
               tsc -p ./
             '';
+            installPrefix = "share/vscode/extensions/arterrian.vscode-nix-selector";
             postInstall = ''
               mkdir -p $out/out;
               cp ./out/extension.js $out/out;
+
+              mkdir tmp;
+              mv $out tmp;
+              mkdir -p "$out/$installPrefix"
+              find tmp -mindepth 2 -maxdepth 2 | xargs -d'\n' mv -t "$out/$installPrefix/"
             '';
           };
           defaultPackage = ves { isShell = false; };
