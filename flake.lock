@@ -1,0 +1,57 @@
+{
+  "nodes": {
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1610051610,
+        "narHash": "sha256-U9rPz/usA1/Aohhk7Cmc2gBrEEKRzcW4nwPWMPwja4Y=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "3982c9903e93927c2164caa727cd3f6a0e6d14cc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nix-npm-buildpackage": {
+      "locked": {
+        "lastModified": 1611215371,
+        "narHash": "sha256-79AxuV+Ko0OMCqtrui2WcrfARW0WWw6GiTt/6CMWcbo=",
+        "owner": "serokell",
+        "repo": "nix-npm-buildpackage",
+        "rev": "d24a0ab6a289a1ea1ab6771a914973cf9c3c1719",
+        "type": "github"
+      },
+      "original": {
+        "owner": "serokell",
+        "repo": "nix-npm-buildpackage",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1611850425,
+        "narHash": "sha256-3YrwHGL2fr2yQ5bGPnP5pp5gM7l2n/Eurq1QrCjHry0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d5f51d0660ca11ed326b168aaadd54849ce2e469",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nix-npm-buildpackage": "nix-npm-buildpackage",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
