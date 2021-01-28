@@ -8,18 +8,18 @@
   outputs = { self, nixpkgs, flake-utils, nix-npm-buildpackage }:
     flake-utils.lib.simpleFlake {
       inherit self nixpkgs;
-      name = "vscode-env-selector";
+      name = "nix-env-selector";
       systems = flake-utils.lib.defaultSystems;
       preOverlays = [ nix-npm-buildpackage.overlay ];
       overlay = (final: prev: {
-        vscode-env-selector = rec {
-          ves = { isShell }: with final; with pkgs; buildYarnPackage {
+        nix-env-selector = rec {
+          nes = { isShell }: with final; with pkgs; buildYarnPackage {
             src = ./.;
             buildInputs = [ nodePackages.typescript ];
             yarnBuildMore = ''
               tsc -p ./
             '';
-            installPrefix = "share/vscode/extensions/arterrian.vscode-nix-selector";
+            installPrefix = "share/vscode/extensions/arterrian.nix-env-selector";
             postInstall = ''
               mkdir -p $out/out;
               cp ./out/extension.js $out/out;
