@@ -30,8 +30,8 @@
               find tmp -mindepth 2 -maxdepth 2 | xargs -d'\n' mv -t "$out/$installPrefix/"
             '';
           };
-          defaultPackage = ves { isShell = false; };
-          devShell = ves { isShell = true; };
+          defaultPackage = nes { isShell = false; };
+          devShell = nes { isShell = true; };
         };
       });
     };
